@@ -1,0 +1,24 @@
+#!/bin/bash
+### Step 02f: MRBench (CC BY-SA 4.0) per-turn correctness labels (Qwen3-32B), then the
+### stage-2 training tables (build_mrbench_pkl.py).
+#BSUB -J mr_anno
+#BSUB -q p1
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=48GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 2:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mr_anno.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mr_anno.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export HF_HOME="$PWD/.hf"
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+export TOKENIZERS_PARALLELISM=false
+export WANDB_MODE=disabled
+unset LD_LIBRARY_PATH
+export VLLM_WORKER_MULTIPROC_METHOD=spawn
+export VLLM_USE_FLASHINFER_SAMPLER=0
+export FLASHINFER_WORKSPACE_DIR=/dtu-compute/sciofsci/magnificat/.flashinfer
+export XDG_CACHE_HOME=/dtu-compute/sciofsci/magnificat/.cache
+.env-vllm/bin/python annotate_mrbench_vllm.py && .env/bin/python build_mrbench_pkl.py

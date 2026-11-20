@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#BSUB -J fix_v2shrunkD
+#BSUB -q hpc
+#BSUB -n 12
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=3GB]"
+#BSUB -M 4GB
+#BSUB -W 3:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/v2fam/fix_v2shrunkD.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/v2fam/fix_v2shrunkD.%J.out
+bash lsf/v2fam/fixd29.sh v2shrunkD v2h artifacts/v2fam_shrunk_122bC.csv

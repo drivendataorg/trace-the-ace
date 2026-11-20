@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+### GPU-noise study (reports/gpu_noise/report.md): score the LLM half of the shipped model on the
+### released test set on one GPU type and record the hardware. Submitted once per GPU type by
+### submit_all.sh, which sets -q / -R / -J / -o / -e and writes SOL (the repository root), PY, TAG,
+### ROWS and, when set, BS, LLMKT_BASE_DIR and OUT into this script after `set -uo pipefail`
+### (exported variables did not reach LSF jobs). Same software everywhere (the Python 3.12
+### environment of README Setup step 2); only the hardware changes. Writes <OUT>/<TAG>.csv and
+### <OUT>/<TAG>.json through src/tools/score_llm_half.py and exits with its status.
+### Site-specific: the #BSUB lines are for an IBM LSF cluster; adapt them to your scheduler.
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -n 8
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -W 24:00
+set -uo pipefail
+SOL=${SOL:?set SOL to the repository root (submit_all.sh does)}
+PY=${PY:-python}                       # Python 3.12 env of README Setup step 2
+# LLMKT_BASE_DIR: if unset, score_llm_half.py uses models/huggingface_models/Qwen/Qwen3-8B
+# (README Setup step 3); set it when running submit_all.sh (which writes it into the job script,
+# like OUT) to point at another copy of Qwen3-8B @ b968826.
+unset PYTHONPATH
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export TMPDIR=${TMPDIR:-/tmp}          # node-local disk is best: the test set unpacks to 8,241 files
+TAG=${TAG:?set TAG}; ROWS=${ROWS:-0}   # BS (batch) optional
+OUT=${OUT:-$SOL/reports/gpu_noise}; mkdir -p "$OUT"
+FEATURES=$(ls "$SOL"/data/raw/test_features*.csv 2>/dev/null | head -1)
+if [ -d "$SOL/data/raw/test_transcripts" ]; then TRANSCRIPTS=$SOL/data/raw/test_transcripts
+else TRANSCRIPTS=$(ls "$SOL"/data/raw/test_transcripts*.zip 2>/dev/null | head -1); fi
+[ -n "$FEATURES" ] && [ -n "$TRANSCRIPTS" ] || { echo "test features/transcripts not found in $SOL/data/raw (README Setup step 4)"; exit 1; }
+echo "[env] host=$(hostname) queue=${LSB_QUEUE:-?} job=${LSB_JOBID:-?} start=$(date -Is)"
+nvidia-smi --query-gpu=name,memory.total,driver_version,compute_cap --format=csv,noheader
+# the shipped batch is 8; cards under 40 GB cannot hold 8 x 8,192-token prompts, so they use a
+# smaller batch (a different batch can move single rows by one bf16 step: README, Run inference)
+MEM=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -1)
+if [ -n "${BS:-}" ]; then :                       # explicit batch from submit_all.sh
+else BS=0; [ "$MEM" -lt 40000 ] && BS=2; [ "$MEM" -lt 20000 ] && BS=1; fi
+echo "[cfg] TAG=$TAG ROWS=$ROWS batch_override=$BS (0 = shipped 8)"
+"$PY" -u "$SOL/src/tools/score_llm_half.py" \
+  --features "$FEATURES" \
+  --transcripts "$TRANSCRIPTS" \
+  --tag "$TAG" --rows "$ROWS" --batch-size "$BS" --out-dir "$OUT"
+rc=$?
+echo "[done] rc=$rc $(date -Is)"
+exit $rc

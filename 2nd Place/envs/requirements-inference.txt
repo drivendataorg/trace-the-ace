@@ -1,0 +1,17 @@
+# Inference environment = the competition's official runtime, restricted to the packages this
+# solution imports. Versions are copied from drivendataorg/tutoring-outcomes-runtime
+# runtime/uv.lock (Python 3.12, CUDA 12.9). Install with uv (see envs/setup_envs.sh).
+--extra-index-url https://download.pytorch.org/whl/cu129
+torch==2.11.0+cu129
+vllm @ https://wheels.vllm.ai/ad7125a431e176d4161099480a66f0169609a690/vllm-0.21.0%2Bcu129-cp38-abi3-manylinux_2_34_x86_64.whl
+flashinfer-python==0.6.8.post1
+transformers==4.57.6
+tokenizers==0.22.2
+huggingface-hub==0.36.2
+safetensors==0.7.0
+sentence-transformers==5.5.0
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.17.1
+scikit-learn==1.8.0
+lightgbm==4.6.0

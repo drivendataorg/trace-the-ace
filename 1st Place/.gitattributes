@@ -1,0 +1,20 @@
+# The package is released as a zip archive (README Setup step 0), which holds the real files.
+# These rules matter only if the package is put into a git repository. Large binaries then go
+# through Git LFS (git lfs install, before committing). Twenty-two shipped
+# files exceed GitHub's 100 MiB per-file limit: the nineteen adapter_model.safetensors (seven
+# plus the twelve seed replicates in models/llm/seeds/),
+# models/submission.zip, and data/interim/turn_probabilities/nto_turn_probs.pkl.gz and
+# v2t_turn_probs_v2ext_122bC.pkl.gz. The rules below cover them and every other weight or binary
+# table. A clone made without Git LFS has small pointer files in their place: run
+# `git lfs pull`, then `sha256sum -c --quiet MANIFEST.sha256`.
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+*.joblib      filter=lfs diff=lfs merge=lfs -text
+*.pkl.gz      filter=lfs diff=lfs merge=lfs -text
+*.pkl         filter=lfs diff=lfs merge=lfs -text
+*.parquet     filter=lfs diff=lfs merge=lfs -text
+*.npy         filter=lfs diff=lfs merge=lfs -text
+*.zip         filter=lfs diff=lfs merge=lfs -text
+
+# keep the shell scripts and launchers runnable on Linux whatever the committer's platform
+*.sh   text eol=lf
+*.bsub text eol=lf

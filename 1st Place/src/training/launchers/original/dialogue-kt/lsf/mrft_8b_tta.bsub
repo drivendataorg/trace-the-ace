@@ -1,0 +1,22 @@
+#!/bin/bash
+### Step 06c: score the MRBench-continued fold-1 model (lmkt_mrft_sa_8b_a1f1) on the held-out
+### fold 1 of traceace_full.pkl.
+#BSUB -J mrft_8b_tta
+#BSUB -q p1
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=48GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 8:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mrft_8b_tta.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mrft_8b_tta.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export HF_HOME="$PWD/.hf"
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+export TOKENIZERS_PARALLELISM=false
+export WANDB_MODE=disabled
+unset LD_LIBRARY_PATH
+export TRACEACE_PKL=data/annotated/traceace_full.pkl
+export LLMKT_MAX_SEQ_LEN=8192
+./run_kt_lsf.sh test --dataset traceace --model_type lmkt --fold 1 --pack_kcs 0 --quantize 0 --inc_first_label --base_model Qwen/Qwen3-8B --model_name lmkt_mrft_sa_8b_a1f1

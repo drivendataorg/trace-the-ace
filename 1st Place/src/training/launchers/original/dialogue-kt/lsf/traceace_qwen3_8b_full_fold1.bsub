@@ -1,0 +1,24 @@
+#!/bin/bash
+### Step 06c, fold parent 1: the stage-1 recipe with LO-disjoint fold 1 held out.
+### The pkl is the --select full build (no last-40-turn window) and LLMKT_MAX_SEQ_LEN=8192
+### (covers the ~8.4k-token max full transcript). Qwen3-8B, bf16, 5-fold LO-disjoint split,
+### 2 epochs. 8192 tokens need an 80GB card + grad checkpointing (on for bf16). Folds 2/3:
+### copy, change --fold and -J.
+#BSUB -J qwen3_full_f1
+#BSUB -q p1
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 48:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_qwen3_full_f1.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_qwen3_full_f1.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export TRACEACE_PKL=data/annotated/traceace_full.pkl    # arm A1 build (--select full)
+export LLMKT_MAX_SEQ_LEN=8192                            # keep the whole transcript (H100)
+./run_kt_lsf.sh train --dataset traceace --model_type lmkt --fold 1 \
+    --pack_kcs 0 --quantize 0 --inc_first_label \
+    --epochs 2 \
+    --base_model Qwen/Qwen3-8B \
+    --model_name lmkt_traceace_qwen3_8b_full

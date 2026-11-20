@@ -1,0 +1,43 @@
+# The libraries main.py imports, at the versions we ran and verified the submission with.
+#
+# These are the pins of the competition runtime as of 2026-06-15
+# (drivendataorg/tutoring-outcomes-runtime, commit ea9a817), except that torch is the CUDA 12.8
+# build (the runtime always used 2.11.0+cu129), plus xgboost 3.3.0, which the runtime added on
+# 2026-07-26 (commit 8581996; by then it had already moved to pandas 2.3.3 and peft 0.18.1, on
+# 2026-07-23, commit 73c8615). The final submission was scored on the later runtime image
+# (commit a2211bc, base image nvidia/cuda:12.9.0-runtime-ubuntu22.04). That image
+# differs from these pins in exactly three places: pandas 2.3.3, peft 0.18.1 and the CUDA 12.9
+# build of torch (2.11.0+cu129); every other pin below is identical. On a 510-row sample of the
+# released test set (400 sessions) the GBM half's output was byte-identical under pandas 2.3.3
+# and 3.0.3; peft's get_delta_weight (the LoRA merge) is textually identical in 0.18.1 and
+# 0.19.1, and the platform ran this main.py under 0.18.1. Our local verification runs (the
+# 0.5934 H100 rerun included) used the CUDA 12.8 build pinned here.
+#
+# The scikit-learn and xgboost versions must match exactly: the GBM and the distilled classifiers
+# are pickled objects of these versions (src/run_inference.py refuses to start with others).
+#
+# Install (Python 3.12; the PyTorch index also hosts common packages such as certifi at other
+# versions, hence uv's --index-strategy flag):
+#   uv venv --python 3.12 .venv && . .venv/bin/activate
+#   uv pip install --index-strategy unsafe-best-match -r requirements.txt
+# or, with pip (which merges indexes by itself):
+#   python3.12 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+# src/training/requirements-cpu.txt is a superset (the full CPU environment, same pins for every
+# package listed here); README Setup step 2 installs that one.
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+# --- feature pipeline and the GBM half ---
+scikit-learn==1.8.0
+xgboost==3.3.0
+pandas==3.0.3
+numpy==2.2.6
+scipy==1.17.1
+joblib==1.5.3
+
+# --- the LLM half (torch: the CUDA 12.8 build, which bundles its own CUDA runtime) ---
+torch==2.11.0+cu128
+transformers==4.57.6
+peft==0.19.1
+accelerate==1.13.0
+safetensors==0.7.0
+tokenizers==0.22.2

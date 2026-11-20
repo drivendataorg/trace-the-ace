@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#BSUB -J anno_stu[1-3]
+#BSUB -q p1
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -n 8
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=64GB]"
+#BSUB -M 64GB
+#BSUB -W 12:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/anno_stu.%J.%I.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/anno_stu.%J.%I.out
+#
+# Step 02c: student-state annotation with Qwen3-32B (annotate_student_states.py), one array
+# element per shard.
+#
+# A SAMPLE, deliberately: the distilled child needs enough labelled turns to fit, not the
+# whole corpus. 1600 sessions/shard x 3 shards ~ 4800 sessions (~21%), and session_order()
+# covers all 398 objectives before repeating any.
+set -euo pipefail
+ROOT=/dtu-compute/sciofsci/magnificat
+unset LD_LIBRARY_PATH
+export HF_HOME="$ROOT/external/dialogue-kt/.hf"
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
+export VLLM_USE_FLASHINFER_SAMPLER=0
+export VLLM_WORKER_MULTIPROC_METHOD=spawn
+export FLASHINFER_WORKSPACE_DIR="$ROOT/.flashinfer"
+export XDG_CACHE_HOME="$ROOT/.cache"
+export CUDA_VISIBLE_DEVICES=0
+export ANNO_SHARD="$((LSB_JOBINDEX-1))/3"
+export ANNO_N_SESSIONS=1600
+cd "$ROOT/external/dialogue-kt"
+nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
+echo "host=$(hostname) shard=$ANNO_SHARD start=$(date -Is)"
+.env-vllm/bin/python annotate_student_states.py
+echo "=== ANNO-STUDENT-DONE shard $ANNO_SHARD $(date -Is)"

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#BSUB -J stu_distil_ab
+#BSUB -q hpc
+#BSUB -n 20
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=48GB]"
+#BSUB -M 48GB
+#BSUB -W 12:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/stu_distil_ab.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/stu_distil_ab.%J.out
+# Step 03d: distil the student-state annotator -> CPU child -> session block. Run AFTER
+# anno_student lands. The later commands run a comparison script (e3_stu_ab.py) that is not
+# part of this repository.
+set -euo pipefail
+ROOT=/dtu-compute/sciofsci/magnificat
+PY="$ROOT/artifacts/rtgpu312/bin/python"
+export PYTHONPATH="$ROOT/src"
+export OMP_NUM_THREADS=2
+cd "$ROOT"
+echo "host=$(hostname) start=$(date -Is)"
+$PY scripts/distil_student_states.py 
+echo "=== DISTIL DONE $(date -Is)"
+echo "--- plumbing smoke (subsampled; NOT a result) ---"
+$PY scripts/e3_stu_ab.py --limit 4000 --max-arms 4 --seeds 1 --jobs 8 --par 3
+echo "=== SMOKE PASSED $(date -Is)"
+$PY scripts/e3_stu_ab.py --seeds 3 --jobs 20 --par 7
+echo "=== STU AB DONE $(date -Is)"
+echo STU-DISTIL-AB-DONE

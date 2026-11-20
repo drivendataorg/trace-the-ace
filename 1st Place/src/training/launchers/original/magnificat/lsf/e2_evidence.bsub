@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+#BSUB -J e2_evidence
+#BSUB -q hpc
+#BSUB -n 8
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=48GB]"
+#BSUB -M 48GB
+#BSUB -W 12:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/e2_evidence.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/e2_evidence.%J.out
+# Steps 01b, 03b and 03a, then a comparison script that is not part of this repository:
+#   1. build record / contingency / repair blocks from the transcripts (01b)
+#   2. session-level NTO LLM move rates (03b)
+#   3. distil the 122B per-turn correctness annotator into a CPU model (03a)
+#   4. e2_evidence_ab.py, a subsampled smoke run and then the full run
+set -euo pipefail
+ROOT=/dtu-compute/sciofsci/magnificat
+PY="$ROOT/artifacts/rtgpu312/bin/python"
+export OMP_NUM_THREADS=8
+export PYTHONPATH="$ROOT/src"
+cd "$ROOT"
+echo "host=$(hostname) start=$(date -Is)"
+
+$PY scripts/build_evidence_features.py
+echo "=== STEP 1 DONE (evidence features) $(date -Is)"
+
+$PY scripts/build_nto_rate_features.py
+echo "=== STEP 2 DONE (NTO rates) $(date -Is)"
+
+$PY scripts/distil_turn_correctness.py
+echo "=== STEP 3 DONE (distilled annotator) $(date -Is)"
+
+echo "--- plumbing smoke (subsampled; NOT a result) ---"
+$PY scripts/e2_evidence_ab.py --limit 4000 --max-arms 3
+echo "=== SMOKE PASSED $(date -Is)"
+
+$PY scripts/e2_evidence_ab.py
+echo "=== STEP 4 DONE (A/B) $(date -Is)"
+echo E2-EVIDENCE-DONE

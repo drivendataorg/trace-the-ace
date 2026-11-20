@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#BSUB -J reoof_cor
+#BSUB -q hpc
+#BSUB -n 12
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=12GB]"
+#BSUB -M 12GB
+#BSUB -W 8:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/reoof_cor.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/reoof_cor.%J.out
+# Step 03a (distil_turn_correctness.py): writes the per-turn OOF probabilities as well as the
+# session-level output; writing the per-turn table does not change the session-level output.
+set -euo pipefail
+cd /dtu-compute/sciofsci/magnificat
+export PYTHONPATH=/dtu-compute/sciofsci/magnificat/src
+export OMP_NUM_THREADS=12
+artifacts/rtgpu312/bin/python scripts/distil_turn_correctness.py
+echo REOOF-cor-DONE

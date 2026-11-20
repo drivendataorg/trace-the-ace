@@ -1,0 +1,18 @@
+# Qwen3-4B / Qwen3-8B LoRA training, out-of-fold scoring (vLLM) and the merges used for
+# synthetic-holdout scoring (Python 3.12). Same core stack as the inference runtime plus PEFT.
+# Original runs used torch 2.6.0 + vLLM 0.8.4 (same transformers 4.57.6 / peft 0.19.1); those
+# wheels do not support Blackwell GPUs, so the runtime's torch 2.11 / vLLM 0.21 are pinned here.
+--extra-index-url https://download.pytorch.org/whl/cu129
+torch==2.11.0+cu129
+vllm @ https://wheels.vllm.ai/ad7125a431e176d4161099480a66f0169609a690/vllm-0.21.0%2Bcu129-cp38-abi3-manylinux_2_34_x86_64.whl
+flashinfer-python==0.6.8.post1
+transformers==4.57.6
+tokenizers==0.22.2
+peft==0.19.1
+accelerate==1.14.0
+huggingface-hub==0.36.2
+safetensors==0.7.0
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.17.1
+scikit-learn==1.8.0

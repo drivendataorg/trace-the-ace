@@ -1,0 +1,30 @@
+#!/bin/bash
+### Step 06c: MRBench (CC BY-SA 4.0) continuation of fold parent 1
+### (lmkt_traceace_qwen3_8b_full_1), 1 epoch at lr 1e-4.
+#BSUB -J mr_train_8b
+#BSUB -q p1
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=64GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 4:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mr_train_8b.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_mr_train_8b.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export HF_HOME="$PWD/.hf"
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+export TOKENIZERS_PARALLELISM=false
+export WANDB_MODE=disabled
+unset LD_LIBRARY_PATH
+export TRACEACE_PKL=data/annotated/mrbench_train.pkl
+export LLMKT_MAX_SEQ_LEN=8192
+export CUBLAS_WORKSPACE_CONFIG=:4096:8
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+./run_kt_lsf.sh train --dataset traceace --model_type lmkt --train_all \
+    --pack_kcs 0 --quantize 0 --inc_first_label \
+    --epochs 1 --lr 1e-4 \
+    --base_model Qwen/Qwen3-8B \
+    --pt_model_name lmkt_traceace_qwen3_8b_full_1 \
+    --model_name lmkt_mrft_sa_8b_a1f1
+echo "CC BY-SA trained weights - shippable ONLY after share-alike gate (doc 11) confirmed" > saved_models/lmkt_mrft_sa_8b_a1f1/LICENSE_GATE.txt

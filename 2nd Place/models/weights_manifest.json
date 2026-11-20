@@ -1,0 +1,702 @@
+{
+  "description": "Every file of the scored archive submission_q35_full_w050 (the 15 weight files removed for size, plus the 104 files shipped in inference/). size_bytes/crc32 are those of the scored archive, except for the one metadata file whose entry carries original_* fields and a note.",
+  "weights_archive": {
+    "url": "https://s3.amazonaws.com/cytologia/ace_models_weights.zip",
+    "size_bytes": 44477610275,
+    "sha256": "d139b95dbfaf77730a6050aceadb4120042cf6ab12f9706fe2c94e38ba5fe2d2"
+  },
+  "files": [
+    {
+      "path": "inference/assets/bge-base-en-v1.5/model.safetensors",
+      "size_bytes": 437951328,
+      "crc32": "953ebd71",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/bge-base-en-v1.5/model.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_4b/adapters/full/adapter_model.safetensors",
+      "size_bytes": 132187888,
+      "crc32": "78e83f38",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_4b/adapters/full/adapter_model.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_4b/base/model-00001-of-00003.safetensors",
+      "size_bytes": 3957900840,
+      "crc32": "39d52ef7",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_4b/base/model-00001-of-00003.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-4B",
+        "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+      }
+    },
+    {
+      "path": "inference/assets/llm_4b/base/model-00002-of-00003.safetensors",
+      "size_bytes": 3987450520,
+      "crc32": "8ff2cb1a",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_4b/base/model-00002-of-00003.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-4B",
+        "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+      }
+    },
+    {
+      "path": "inference/assets/llm_4b/base/model-00003-of-00003.safetensors",
+      "size_bytes": 99630640,
+      "crc32": "59a8c779",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_4b/base/model-00003-of-00003.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-4B",
+        "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/adapters/full/adapter_model.safetensors",
+      "size_bytes": 174655536,
+      "crc32": "45a71e6a",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/adapters/full/adapter_model.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model-00001-of-00005.safetensors",
+      "size_bytes": 3996250744,
+      "crc32": "b715e25d",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/base/model-00001-of-00005.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model-00002-of-00005.safetensors",
+      "size_bytes": 3993160032,
+      "crc32": "6d5512df",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/base/model-00002-of-00005.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model-00003-of-00005.safetensors",
+      "size_bytes": 3959604768,
+      "crc32": "f61fb7fb",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/base/model-00003-of-00005.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model-00004-of-00005.safetensors",
+      "size_bytes": 3187841392,
+      "crc32": "276ad48f",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/base/model-00004-of-00005.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model-00005-of-00005.safetensors",
+      "size_bytes": 1244659840,
+      "crc32": "c29e04e9",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_8b/base/model-00005-of-00005.safetensors"
+      },
+      "origin": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    },
+    {
+      "path": "inference/assets/llm_q35/base/model.safetensors-00001-of-00004.safetensors",
+      "size_bytes": 5276436248,
+      "crc32": "a1c11666",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_q35/base/model.safetensors-00001-of-00004.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_q35/base/model.safetensors-00002-of-00004.safetensors",
+      "size_bytes": 5335161536,
+      "crc32": "ff5e7dcf",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_q35/base/model.safetensors-00002-of-00004.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_q35/base/model.safetensors-00003-of-00004.safetensors",
+      "size_bytes": 5368717472,
+      "crc32": "aad2c0a4",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_q35/base/model.safetensors-00003-of-00004.safetensors"
+      }
+    },
+    {
+      "path": "inference/assets/llm_q35/base/model.safetensors-00004-of-00004.safetensors",
+      "size_bytes": 3325995744,
+      "crc32": "a57f5d87",
+      "source": {
+        "type": "weights_archive",
+        "filename": "assets/llm_q35/base/model.safetensors-00004-of-00004.safetensors"
+      }
+    }
+  ],
+  "retained": [
+    {
+      "path": "inference/main.py",
+      "size_bytes": 31939,
+      "crc32": "e5d61c8b"
+    },
+    {
+      "path": "inference/assets/ace/__init__.py",
+      "size_bytes": 72,
+      "crc32": "616a5d1c"
+    },
+    {
+      "path": "inference/assets/ace/features.py",
+      "size_bytes": 6836,
+      "crc32": "8d5fe64e"
+    },
+    {
+      "path": "inference/assets/ace/transcripts.py",
+      "size_bytes": 4422,
+      "crc32": "5a379b7b"
+    },
+    {
+      "path": "inference/assets/ace/utils.py",
+      "size_bytes": 547,
+      "crc32": "edeb3f75"
+    },
+    {
+      "path": "inference/assets/ace/tabular_v2_features.py",
+      "size_bytes": 35290,
+      "crc32": "e3c180bd"
+    },
+    {
+      "path": "inference/assets/ace/llm/__init__.py",
+      "size_bytes": 83,
+      "crc32": "44972354"
+    },
+    {
+      "path": "inference/assets/ace/llm/serialize.py",
+      "size_bytes": 12290,
+      "crc32": "f9a1183b"
+    },
+    {
+      "path": "inference/assets/ace/llm/score_worker.py",
+      "size_bytes": 10536,
+      "crc32": "64b72a43"
+    },
+    {
+      "path": "inference/assets/ace/llm/bundle.py",
+      "size_bytes": 23567,
+      "crc32": "6d6bc1c8"
+    },
+    {
+      "path": "inference/assets/ace/llm/model_family.py",
+      "size_bytes": 9024,
+      "crc32": "ae4fac93"
+    },
+    {
+      "path": "inference/assets/ace/llm/runtime_check.py",
+      "size_bytes": 11549,
+      "crc32": "e379dee1"
+    },
+    {
+      "path": "inference/assets/ace/llm/objective_context.py",
+      "size_bytes": 19588,
+      "crc32": "9a52ac71"
+    },
+    {
+      "path": "inference/assets/ace/llm/prepare_objective_contexts.py",
+      "size_bytes": 7665,
+      "crc32": "bec3c280"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/1_Pooling/config.json",
+      "size_bytes": 312,
+      "crc32": "ad0e7677"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/README.md",
+      "size_bytes": 94551,
+      "crc32": "2b94a06a"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/config.json",
+      "size_bytes": 690,
+      "crc32": "8be3c597"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/config_sentence_transformers.json",
+      "size_bytes": 283,
+      "crc32": "aeb6efaf"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/modules.json",
+      "size_bytes": 349,
+      "crc32": "36f5269b"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/sentence_bert_config.json",
+      "size_bytes": 56,
+      "crc32": "7920bbf4"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/special_tokens_map.json",
+      "size_bytes": 695,
+      "crc32": "83ac2dce"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/tokenizer.json",
+      "size_bytes": 711396,
+      "crc32": "fec4e1bc"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/tokenizer_config.json",
+      "size_bytes": 1272,
+      "crc32": "58fee6c8"
+    },
+    {
+      "path": "inference/assets/bge-base-en-v1.5/vocab.txt",
+      "size_bytes": 231508,
+      "crc32": "e3084609"
+    },
+    {
+      "path": "inference/assets/config.json",
+      "size_bytes": 1152,
+      "crc32": "e955f775"
+    },
+    {
+      "path": "inference/assets/gbm/seed1337_fold0.txt",
+      "size_bytes": 750899,
+      "crc32": "e9c3ee56"
+    },
+    {
+      "path": "inference/assets/gbm/seed1337_fold1.txt",
+      "size_bytes": 127562,
+      "crc32": "b45959f8"
+    },
+    {
+      "path": "inference/assets/gbm/seed1337_fold2.txt",
+      "size_bytes": 3037831,
+      "crc32": "bf09fed9"
+    },
+    {
+      "path": "inference/assets/gbm/seed1337_fold3.txt",
+      "size_bytes": 175628,
+      "crc32": "43e1fdbe"
+    },
+    {
+      "path": "inference/assets/gbm/seed1337_fold4.txt",
+      "size_bytes": 196692,
+      "crc32": "5b5ac035"
+    },
+    {
+      "path": "inference/assets/gbm/seed2024_fold0.txt",
+      "size_bytes": 93130,
+      "crc32": "3f92b0a8"
+    },
+    {
+      "path": "inference/assets/gbm/seed2024_fold1.txt",
+      "size_bytes": 10362,
+      "crc32": "703d3a1c"
+    },
+    {
+      "path": "inference/assets/gbm/seed2024_fold2.txt",
+      "size_bytes": 701296,
+      "crc32": "758135d9"
+    },
+    {
+      "path": "inference/assets/gbm/seed2024_fold3.txt",
+      "size_bytes": 355715,
+      "crc32": "e1ebfc23"
+    },
+    {
+      "path": "inference/assets/gbm/seed2024_fold4.txt",
+      "size_bytes": 155138,
+      "crc32": "6f3334d1"
+    },
+    {
+      "path": "inference/assets/gbm/seed42_fold0.txt",
+      "size_bytes": 10349,
+      "crc32": "dd802176"
+    },
+    {
+      "path": "inference/assets/gbm/seed42_fold1.txt",
+      "size_bytes": 120659,
+      "crc32": "26d24657"
+    },
+    {
+      "path": "inference/assets/gbm/seed42_fold2.txt",
+      "size_bytes": 321413,
+      "crc32": "37b26fd4"
+    },
+    {
+      "path": "inference/assets/gbm/seed42_fold3.txt",
+      "size_bytes": 210305,
+      "crc32": "e90150f5"
+    },
+    {
+      "path": "inference/assets/gbm/seed42_fold4.txt",
+      "size_bytes": 141425,
+      "crc32": "7c5ba6b1"
+    },
+    {
+      "path": "inference/assets/logreg.npz",
+      "size_bytes": 16817032,
+      "crc32": "540d2117"
+    },
+    {
+      "path": "inference/assets/tabular_v2/config.json",
+      "size_bytes": 6196,
+      "crc32": "de5abc91"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed1337_fold0.txt",
+      "size_bytes": 42425,
+      "crc32": "9427f238"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed1337_fold1.txt",
+      "size_bytes": 1463312,
+      "crc32": "a88c499b"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed1337_fold2.txt",
+      "size_bytes": 1501888,
+      "crc32": "4f578211"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed1337_fold3.txt",
+      "size_bytes": 210062,
+      "crc32": "ba8d69ad"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed1337_fold4.txt",
+      "size_bytes": 489740,
+      "crc32": "796c5a8a"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed2024_fold0.txt",
+      "size_bytes": 12944,
+      "crc32": "bc4f3ff6"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed2024_fold1.txt",
+      "size_bytes": 1598104,
+      "crc32": "c1a69add"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed2024_fold2.txt",
+      "size_bytes": 2137044,
+      "crc32": "11ed2cfa"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed2024_fold3.txt",
+      "size_bytes": 365172,
+      "crc32": "c8ca613c"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed2024_fold4.txt",
+      "size_bytes": 553172,
+      "crc32": "4a841c8d"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed42_fold0.txt",
+      "size_bytes": 46033,
+      "crc32": "c4569d6a"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed42_fold1.txt",
+      "size_bytes": 1325786,
+      "crc32": "abdd8717"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed42_fold2.txt",
+      "size_bytes": 1308135,
+      "crc32": "71fa4589"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed42_fold3.txt",
+      "size_bytes": 269841,
+      "crc32": "6bdb5a50"
+    },
+    {
+      "path": "inference/assets/tabular_v2/models/seed42_fold4.txt",
+      "size_bytes": 464829,
+      "crc32": "cb47e7bd"
+    },
+    {
+      "path": "inference/assets/te_objective.npz",
+      "size_bytes": 573007,
+      "crc32": "2306de92"
+    },
+    {
+      "path": "inference/assets/tfidf_objective.npz",
+      "size_bytes": 11301,
+      "crc32": "75b39f5f"
+    },
+    {
+      "path": "inference/assets/tfidf_transcript.npz",
+      "size_bytes": 1674808,
+      "crc32": "7260a827"
+    },
+    {
+      "path": "inference/assets/topic_map.json",
+      "size_bytes": 5604,
+      "crc32": "bde61222"
+    },
+    {
+      "path": "inference/assets/llm_4b/adapters/full/adapter_config.json",
+      "size_bytes": 1092,
+      "crc32": "aebbe62f"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/config.json",
+      "size_bytes": 726,
+      "crc32": "1c443da0"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/generation_config.json",
+      "size_bytes": 239,
+      "crc32": "c6d78975"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/merges.txt",
+      "size_bytes": 1671853,
+      "crc32": "42998796"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/model.safetensors.index.json",
+      "size_bytes": 32819,
+      "crc32": "9dcf5e0c"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/tokenizer.json",
+      "size_bytes": 11422654,
+      "crc32": "a9680d30"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/tokenizer_config.json",
+      "size_bytes": 9732,
+      "crc32": "5bf08290"
+    },
+    {
+      "path": "inference/assets/llm_4b/base/vocab.json",
+      "size_bytes": 2776833,
+      "crc32": "8a9480f3"
+    },
+    {
+      "path": "inference/assets/llm_8b/adapters/full/adapter_config.json",
+      "size_bytes": 1092,
+      "crc32": "e3786e75"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/config.json",
+      "size_bytes": 728,
+      "crc32": "d48a8d8d"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/generation_config.json",
+      "size_bytes": 239,
+      "crc32": "c6d78975"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/merges.txt",
+      "size_bytes": 1671853,
+      "crc32": "42998796"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/model.safetensors.index.json",
+      "size_bytes": 32878,
+      "crc32": "6381d809"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/tokenizer.json",
+      "size_bytes": 11422654,
+      "crc32": "a9680d30"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/tokenizer_config.json",
+      "size_bytes": 9732,
+      "crc32": "5bf08290"
+    },
+    {
+      "path": "inference/assets/llm_8b/base/vocab.json",
+      "size_bytes": 2776833,
+      "crc32": "8a9480f3"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/CACHEDIR.TAG",
+      "size_bytes": 191,
+      "crc32": "f5ed021b"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/chat_template.jinja.metadata",
+      "size_bytes": 101,
+      "crc32": "71324736"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/config.json.metadata",
+      "size_bytes": 99,
+      "crc32": "c4480f21"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/merges.txt.metadata",
+      "size_bytes": 99,
+      "crc32": "ca451d00"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/model.safetensors-00001-of-00004.safetensors.metadata",
+      "size_bytes": 124,
+      "crc32": "20e1737a"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/model.safetensors-00002-of-00004.safetensors.metadata",
+      "size_bytes": 125,
+      "crc32": "a37960e8"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/model.safetensors-00003-of-00004.safetensors.metadata",
+      "size_bytes": 124,
+      "crc32": "7c52ab0d"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/model.safetensors-00004-of-00004.safetensors.metadata",
+      "size_bytes": 125,
+      "crc32": "9e33b7f2"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/model.safetensors.index.json.metadata",
+      "size_bytes": 101,
+      "crc32": "6f9e9940"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/preprocessor_config.json.metadata",
+      "size_bytes": 101,
+      "crc32": "71bef165"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/tokenizer.json.metadata",
+      "size_bytes": 125,
+      "crc32": "3c20e9bc"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/tokenizer_config.json.metadata",
+      "size_bytes": 101,
+      "crc32": "7ed5b159"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/video_preprocessor_config.json.metadata",
+      "size_bytes": 101,
+      "crc32": "6ebfea69"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/download/vocab.json.metadata",
+      "size_bytes": 101,
+      "crc32": "29693978"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/.cache/huggingface/trees/c202236235762e1c871ad0ccb60c8ee5ba337b9a.json",
+      "size_bytes": 2813,
+      "crc32": "bf51dc32"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/chat_template.jinja",
+      "size_bytes": 7756,
+      "crc32": "d91eb5dd"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/config.json",
+      "size_bytes": 3126,
+      "crc32": "8a7f50c3"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/dense_export_manifest.json",
+      "size_bytes": 592,
+      "crc32": "326eb97d",
+      "original_size_bytes": 616,
+      "original_crc32": "026b129c",
+      "note": "metadata-only change: the two provenance strings base_model/adapter held developer-local absolute paths and were replaced by the Hugging Face model id + revision and the repo-relative adapter path. No code reads these fields at inference (vLLM loads config.json/index/shards; the training-side validator only checks the keys exist)."
+    },
+    {
+      "path": "inference/assets/llm_q35/base/merges.txt",
+      "size_bytes": 3353259,
+      "crc32": "1824fcb5"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/model.safetensors.index.json",
+      "size_bytes": 79657,
+      "crc32": "fb3f7f7f"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/preprocessor_config.json",
+      "size_bytes": 390,
+      "crc32": "030e383a"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/tokenizer.json",
+      "size_bytes": 12807982,
+      "crc32": "2af74563"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/tokenizer_config.json",
+      "size_bytes": 16710,
+      "crc32": "7c503b0c"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/video_preprocessor_config.json",
+      "size_bytes": 385,
+      "crc32": "44c041dc"
+    },
+    {
+      "path": "inference/assets/llm_q35/base/vocab.json",
+      "size_bytes": 6722759,
+      "crc32": "da8db314"
+    },
+    {
+      "path": "inference/assets/llm_q35/bundle.json",
+      "size_bytes": 282,
+      "crc32": "d8d711fb"
+    },
+    {
+      "path": "inference/assets/llm_stack.json",
+      "size_bytes": 5525,
+      "crc32": "d1885447"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#BSUB -J v2_child
+#BSUB -q hpc
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=5GB]"
+#BSUB -M 6GB
+#BSUB -W 3:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/v2ab/child.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/v2ab/child.%J.out
+set -uo pipefail
+cd /dtu-compute/sciofsci/magnificat
+echo "host=$(hostname) start=$(date -Is)"
+
+# Step 03f: distil the taxonomy-v2 annotator (tutor and student, in parallel) and emit the
+# all-data child classifiers. Inference does not read the session CSVs; it rebuilds each block
+# from the transcripts using a saved child (the same way `nto_features` uses
+# `nto_moves_clf.joblib`).
+#
+# The `C` tag marks the blocks built with the elicit_to_tell clip (the clip moves 10 of 22,816
+# sessions).
+P=artifacts/rtgpu312/bin/python
+S=artifacts/v2_sessions_3072.txt
+L=artifacts/v2labels/122b
+
+OMP_NUM_THREADS=8 $P scripts/distil_v2_moves.py \
+    --labels $L/moves_v2_ext_tutor_shard0.csv --map v2_ext --role tutor \
+    --prefix v2t --tag v2ext_122bC --restrict-sessions $S --ratios v2 \
+    > lsf/v2ab/distil_ext_122bC.log 2>&1 &
+OMP_NUM_THREADS=8 $P scripts/distil_v2_moves.py \
+    --labels $L/moves_v2_ext_student_shard0.csv --map student --role student \
+    --prefix v2s --tag v2stu_122bC --restrict-sessions $S \
+    > lsf/v2ab/distil_stu_122bC.log 2>&1 &
+wait
+echo "CHILD-DONE rc=$? $(date -Is)"
+ls -la artifacts/v2*_clf_*122bC*.joblib 2>/dev/null

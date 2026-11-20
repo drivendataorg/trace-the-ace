@@ -1,0 +1,26 @@
+#!/bin/bash
+### Step 06a, LoRA stage 1: Qwen3-8B on the full-transcript table.
+### Train on all ~35,062 samples (--train_all, no held-out fold), bf16 (--quantize 0; runtime
+### has no bitsandbytes), 2 epochs, TRACEACE_PKL=traceace_full.pkl + LLMKT_MAX_SEQ_LEN=8192
+### (must match inference: the submission's main.py sets the same value for llmkt_infer).
+### 8192-ctx bf16 ~2.6-2.9 s/it on H100 => ~70k steps ~= 51-56h, fits the 72h cap (p1).
+### Loop checkpoints after each epoch (train_all has no val) so a 1-epoch model survives an
+### early cut. Saves -> lmkt_traceace_qwen3_8b_full_final.
+#BSUB -J ta_final_8b_full
+#BSUB -q p1
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=48GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 72:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_ta_final_8b_full.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_ta_final_8b_full.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export TRACEACE_PKL=data/annotated/traceace_full.pkl    # full-transcript build (ablation winner)
+export LLMKT_MAX_SEQ_LEN=8192                            # whole transcript; must match inference
+./run_kt_lsf.sh train --dataset traceace --model_type lmkt --train_all \
+    --pack_kcs 0 --quantize 0 --inc_first_label \
+    --epochs 2 \
+    --base_model Qwen/Qwen3-8B \
+    --model_name lmkt_traceace_qwen3_8b_full_final

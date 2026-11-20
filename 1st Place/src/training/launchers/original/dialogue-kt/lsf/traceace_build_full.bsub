@@ -1,0 +1,21 @@
+#!/bin/bash
+### Step 01a: build the full-transcript traceace pkl. --select full keeps every turn (no
+### last-40 window); no embeddings are needed, so this is fast and does not use the GPU.
+### Output read by traceace_qwen3_8b_full_final and traceace_qwen3_8b_full_fold{1,2,3}.
+#BSUB -J ta_build_full
+#BSUB -q gpul40s
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 2:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_ta_build_full.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/external/dialogue-kt/lsf/logs/%J_ta_build_full.err
+
+cd /dtu-compute/sciofsci/magnificat/external/dialogue-kt
+export HF_HOME="$PWD/.hf"
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+export TOKENIZERS_PARALLELISM=false
+unset LD_LIBRARY_PATH
+.env/bin/python build_traceace_kt.py --select full --max_turns 0 \
+    --out data/annotated/traceace_full.pkl

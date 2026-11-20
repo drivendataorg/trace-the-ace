@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#BSUB -J d29_distil
+#BSUB -q hpc
+#BSUB -n 8
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -M 16GB
+#BSUB -W 8:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/d29_distil.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/d29_distil.%J.out
+#
+# Steps 03e and 04a: distil the interview-codebook labels into TF-IDF heads, then compile the
+# 34-column session block.
+#
+# Input: artifacts/doc29_records_14b/doc29_raw_records_14b.parquet (step 02d).
+#
+# Sanity targets:
+#   mean head OOF AUC ~0.9082 over 14 heads; stu_assertive is the known weak head (0.7514,
+#   because assertiveness is the ABSENCE of a marker and bag-of-ngrams cannot represent absence).
+set -uo pipefail
+cd /dtu-compute/sciofsci/magnificat
+export OMP_NUM_THREADS=1
+echo "host=$(hostname) start=$(date -Is)"
+
+artifacts/rtgpu312/bin/python scripts/distil_doc29_labels.py
+echo "DISTIL_RC=$?"
+
+artifacts/rtgpu312/bin/python scripts/build_doc29_features.py --mode distilled
+echo "BUILD_RC=$?"
+
+echo "D29-DISTIL-DONE $(date -Is)"

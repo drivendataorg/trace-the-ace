@@ -1,0 +1,27 @@
+# dialogue-kt LoRA environment, stage 2 (step 06b, the shipped adapter) and the fold-2/3 MRBench
+# continuations (06c). Ran on a UCloud B200 node. Not an exact freeze: reconstructed from
+# that node's setup script (src/training/launchers/original/ucloud/setup_env.sh), whose pins are
+# reproduced verbatim. sentencepiece, tqdm, matplotlib and scipy were installed unpinned on
+# 2026-07-22 and that node no longer exists, so their versions are unknown. torch
+# was 2.11.0 from the cu128 index; pyBKT and pykt-toolkit go in a separate --no-deps step,
+# which a requirements file cannot express.
+#   Python 3.12. From the repository root:
+#     uv venv --seed --python 3.12 .venv-stage2
+#     .venv-stage2/bin/pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+#     .venv-stage2/bin/pip install -r src/training/requirements-lora-stage2.txt
+#     .venv-stage2/bin/pip install --no-deps pyBKT==1.4.1 pykt-toolkit==0.0.38   # imported at module level by dialogue-kt
+transformers==5.12.1
+peft==0.19.1
+accelerate==1.14.0
+datasets==5.0.0
+pandas==2.3.3
+numpy==2.2.6
+scikit-learn==1.7.2
+sentence-transformers==5.6.0
+krippendorff==0.8.2
+openai==2.44.0
+wandb==0.28.0
+sentencepiece
+tqdm
+matplotlib
+scipy

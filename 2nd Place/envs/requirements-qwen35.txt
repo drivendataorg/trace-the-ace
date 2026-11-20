@@ -1,0 +1,19 @@
+# Qwen3.5-9B LoRA training, out-of-fold scoring (Transformers) and the merge into a
+# vLLM-servable dense checkpoint (Python 3.12). Native Qwen3_5ForCausalLM needs Transformers 5;
+# the adapter metadata records PEFT 0.19.1. flash-linear-attention provides the fast
+# Gated-DeltaNet kernels used in training (pinned to the commit used).
+--extra-index-url https://download.pytorch.org/whl/cu129
+torch==2.11.0+cu129
+transformers==5.15.0
+tokenizers==0.22.2
+peft==0.19.1
+accelerate==1.13.0
+huggingface-hub==1.27.0
+safetensors==0.8.0
+numpy==2.5.2
+pandas==3.0.5
+scipy==1.18.0
+scikit-learn==1.9.0
+flash-linear-attention @ git+https://github.com/fla-org/flash-linear-attention@ab181c671576fd9cdeed678d216a6273185be700
+# optional, compiled from source (needs nvcc); speeds up the short convolutions:
+# causal-conv1d==1.6.2.post1

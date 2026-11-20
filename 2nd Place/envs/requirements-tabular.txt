@@ -1,0 +1,21 @@
+# Tabular / embedding / stacking environment (Python 3.12).
+# Used for: EDA + CV folds, BGE embeddings, TF-IDF+LR / LightGBM base blend, tabular_v2,
+# the level-2 stack fit and the synthetic-holdout ratio. scikit-learn 1.7.2 matters:
+# fit_stack_sub9.py reproduces the shipped coefficients only with this lbfgs build.
+# The cu128 torch wheel runs on Ampere, Hopper and Blackwell (e.g. RTX 6000 Pro) GPUs.
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.9.0+cu128
+numpy==1.26.4
+pandas==2.3.3
+scipy==1.16.3
+scikit-learn==1.7.2
+lightgbm==4.6.0
+sentence-transformers==5.2.2
+transformers==4.57.3
+tokenizers==0.22.2
+huggingface-hub==0.36.2
+safetensors==0.6.2
+matplotlib==3.10.7
+umap-learn==0.5.9.post2
+numba==0.60.0
+tqdm==4.67.1

@@ -1,0 +1,31 @@
+# competition data and anything derived from it
+/data/
+/data_dryrun/
+/outputs_reference/
+/outputs/
+/cache/
+/submission/
+inference/data
+inference/submission.csv
+# model weights and caches (downloaded by scripts/download_weights.py / run_training.sh stage 0)
+inference/assets/**/*.safetensors
+/models/hf/
+*.part
+/.cache/
+# environments, secrets, local logs
+.venv-*/
+.env
+/scripts/env.sh
+.env.*
+!.env.example
+*.log
+/.verify.log
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+
+.idea/
+*.iml
+.pytest_cache/

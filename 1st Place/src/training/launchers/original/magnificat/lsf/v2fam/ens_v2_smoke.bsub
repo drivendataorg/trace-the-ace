@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+#BSUB -J ens_v2_smoke
+#BSUB -q gpul40s
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -M 16GB
+#BSUB -W 3:00
+#BSUB -o /dtu-compute/sciofsci/magnificat/lsf/v2fam/ens_v2_smoke.%J.out
+#BSUB -e /dtu-compute/sciofsci/magnificat/lsf/v2fam/ens_v2_smoke.%J.out
+# Smoke test of three submission zips, each run from the zip on the 100-row smoke set. Zip 1
+# holds the shipped v2shrunkD XGBoost model; zips K and 2 hold other XGBoost halves and are not
+# needed for the shipped files. The three differ only in the XGBoost half. K runs first, so 1
+# and 2 do not pay the cold read of the base model off the network FS.
+set -uo pipefail
+ROOT=/dtu-compute/sciofsci/magnificat
+PY="$ROOT/artifacts/rtgpu312/bin/python"
+SNAP="$ROOT/external/dialogue-kt/.hf/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218"
+ZK="$ROOT/submission_archive/2026-08-24_1430_ens-keephdr2.zip"
+Z1="$ROOT/artifacts/ens-v2-keephdr-w043.zip"
+Z2="$ROOT/artifacts/ens-v2lseg-keephdr-w043.zip"
+unset LD_LIBRARY_PATH
+export TOKENIZERS_PARALLELISM=false
+WORK="$ROOT/artifacts/smoke_ens_v2"
+rm -rf "$WORK"; mkdir -p "$WORK/empty_hf"; cd "$WORK"
+echo "[env] host=$(hostname) start=$(date -Is)"
+sha256sum "$ZK" "$Z1" "$Z2"
+nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || true
+run_arm () {
+  local d="$1" z="$2"
+  echo; echo "=== ARM $d : $(basename $z) ==="
+  mkdir -p "$d" && cd "$d"
+  unzip -t "$z" >/dev/null && echo "  CRC OK" || { echo "  CRC FAILED"; cd "$WORK"; return 1; }
+  unzip -q "$z" -d .
+  [ -f assets/lora_sha256.txt ] && (cd assets/lora_llm && sha256sum -c ../lora_sha256.txt)
+  ln -sfn "$ROOT/local_runtime/data-smoke" data
+  mkdir -p huggingface_models/Qwen/Qwen3-8B
+  for f in "$SNAP"/*; do ln -sf "$f" "huggingface_models/Qwen/Qwen3-8B/$(basename "$f")"; done
+  export HF_HOME="$WORK/empty_hf"
+  local t0=$(date +%s)
+  "$PY" main.py; local rc=$?
+  echo "  ARM $d rc=$rc wall=$(( $(date +%s) - t0 ))s"
+  cd "$WORK"
+}
+run_arm K "$ZK"
+run_arm 1 "$Z1"
+run_arm 2 "$Z2"
+echo; echo "=== COMPARE (smoke rows are LEAKY TRAINING ROWS -- LL is NOT evidence) ==="
+"$PY" - <<'PY'
+import numpy as np, pandas as pd
+from sklearn.metrics import log_loss, roc_auc_score
+R="/dtu-compute/sciofsci/magnificat"
+lab=pd.read_csv(f"{R}/local_runtime/smoke_labels.csv")
+fmt=pd.read_csv(f"{R}/local_runtime/data-smoke/submission_format.csv")
+P={}
+for arm,path in (("K keephdr2","K/submission.csv"),("1 +v2shrunkD","1/submission.csv"),
+                 ("2 +v2lseg","2/submission.csv")):
+    try: df=pd.read_csv(path)
+    except Exception as e: print(f"{arm}: MISSING ({e})"); continue
+    assert list(df.columns)==list(fmt.columns), df.columns
+    assert len(df)==len(fmt)==100 and set(df.response_id)==set(fmt.response_id)
+    P[arm]=df.set_index("response_id")["probability"].reindex(lab.response_id).to_numpy()
+    y=lab.is_correct.to_numpy()
+    print(f"{arm:14s} LL {log_loss(y,P[arm],labels=[0,1]):.4f}  AUC {roc_auc_score(y,P[arm]):.4f}"
+          f"  p[{P[arm].min():.4f},{P[arm].max():.4f}] uniq {len(set(P[arm]))}")
+k=P.get("K keephdr2")
+for arm in ("1 +v2shrunkD","2 +v2lseg"):
+    if arm in P and k is not None:
+        d=np.abs(P[arm]-k)
+        print(f"  {arm} vs K: rows changed {int((d>0).sum())}/100, max|Δp| {d.max():.4f}, mean {d.mean():.4f}")
+PY
+echo "ENSV2-DONE $(date -Is)"
